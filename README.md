@@ -13,6 +13,7 @@ This folder contains a minimal Docker template for Anima LoRA training on RTX 40
   - `check_anima_env`
   - `install_ykc_package ykc3`
   - `download_anima_models ykc3`
+  - `start_upload_server`
 
 Model weights and character packages are intentionally not baked in. Keep Civitai tokens out of Dockerfiles and public registries.
 
@@ -79,18 +80,29 @@ In RunPod:
 YOUR_DOCKERHUB_USER/anima-lora-runpod:cu124-torch260
 ```
 
-4. Use a container disk large enough for sd-scripts, models, package, and output. A practical minimum is 80 GB; 120 GB is more comfortable.
+4. Use a container disk large enough for sd-scripts, models, package, and output. 40 GB can work for small jobs, while 80 GB is more comfortable.
 5. Set the start command to the image default, or:
 
 ```bash
 bash -lc "sleep infinity"
 ```
 
-6. Save the template.
+6. Add HTTP port `8000` if you want to use the browser uploader.
+7. Save the template.
 
 ## Use On A Fresh Pod
 
 Upload `ykc3_lora_package.zip` to `/workspace`, then run:
+
+If HTTP port `8000` is exposed, start the browser uploader from the Web Terminal:
+
+```bash
+start_upload_server
+```
+
+Open the RunPod HTTP service for port `8000`, upload `ykc3_lora_package.zip`, then stop the server with `Ctrl+C`.
+
+Then run:
 
 ```bash
 check_anima_env

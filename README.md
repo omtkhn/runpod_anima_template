@@ -2,13 +2,15 @@
 
 This folder contains a minimal Docker template for Anima LoRA training on RTX 4090-class RunPod Pods.
 
-## What Is Baked In
+## Included In This Template
 
 - PyTorch 2.6.0 + CUDA 12.4 base image
 - Latest `kohya-ss/sd-scripts`
 - Anima training files:
   - `/workspace/sd-scripts/anima_train_network.py`
   - `/workspace/sd-scripts/networks/lora_anima.py`
+- Upload helper for LoRA packages and model files
+- Download helper for finished LoRA outputs
 - Helper commands:
   - `check_anima_env`
   - `install_ykc_package ykc3`
@@ -17,6 +19,25 @@ This folder contains a minimal Docker template for Anima LoRA training on RTX 40
   - `start_download_server ykc3`
 
 Model weights and character packages are intentionally not baked in. Keep Civitai tokens out of Dockerfiles and public registries.
+
+## Ports
+
+| Connect Port | Internal Port | Description |
+| --- | --- | --- |
+| 8000 | 8000 | Browser uploader for packages and model files |
+| 8001 | 8001 | Browser downloader for finished `.safetensors` outputs |
+
+## Environment Variables
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `UPLOAD_PORT` | Port used by `start_upload_server` | `8000` |
+| `UPLOAD_DIR` | Directory where uploaded files are saved | `/workspace` |
+| `DOWNLOAD_PORT` | Port used by `start_download_server` | `8001` |
+| `DOWNLOAD_DIR` | Directory served when no tag is passed to `start_download_server` | `/workspace` |
+| `CIVITAI_TOKEN` | Token used by `download_anima_models` for Civitai model download | not set |
+
+Do not save `CIVITAI_TOKEN` in the template. Set it directly in the RunPod terminal only when downloading models.
 
 ## Build And Push
 
@@ -93,8 +114,6 @@ bash -lc "sleep infinity"
 
 ## Use On A Fresh Pod
 
-Upload `ykc3_lora_package.zip` to `/workspace`, then run:
-
 If HTTP port `8000` is exposed, start the browser uploader from the Web Terminal:
 
 ```bash
@@ -103,15 +122,23 @@ start_upload_server
 
 Open the RunPod HTTP service for port `8000`, upload `ykc3_lora_package.zip`, then stop the server with `Ctrl+C`.
 
-Then run:
+Then install the package:
 
 ```bash
 check_anima_env
 install_ykc_package ykc3
+```
 
+Download the model files:
+
+```bash
 export CIVITAI_TOKEN="set_this_in_runpod_terminal"
 download_anima_models ykc3
+```
 
+Start training:
+
+```bash
 bash /workspace/ykc3_lora/scripts/train_ykc3_anima_lora.sh
 ```
 

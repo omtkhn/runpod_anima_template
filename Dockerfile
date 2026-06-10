@@ -45,9 +45,11 @@ COPY download_anima_models.sh /usr/local/bin/download_anima_models
 COPY upload_server.py /usr/local/bin/upload_server.py
 COPY start_upload_server.sh /usr/local/bin/start_upload_server
 COPY start_download_server.sh /usr/local/bin/start_download_server
-RUN chmod +x /usr/local/bin/check_anima_env /usr/local/bin/install_ykc_package /usr/local/bin/download_anima_models /usr/local/bin/upload_server.py /usr/local/bin/start_upload_server /usr/local/bin/start_download_server
+COPY file_manager.py /usr/local/bin/file_manager.py
+COPY start_file_manager.sh /usr/local/bin/start_file_manager
+RUN chmod +x /usr/local/bin/check_anima_env /usr/local/bin/install_ykc_package /usr/local/bin/download_anima_models /usr/local/bin/upload_server.py /usr/local/bin/start_upload_server /usr/local/bin/start_download_server /usr/local/bin/file_manager.py /usr/local/bin/start_file_manager
 
-EXPOSE 8000 8001
+EXPOSE 2999 8000 8001
 
 WORKDIR /workspace
 

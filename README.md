@@ -11,10 +11,12 @@ This folder contains a minimal Docker template for Anima LoRA training on RTX 40
   - `/workspace/sd-scripts/networks/lora_anima.py`
 - Upload helper for LoRA packages and model files
 - Download helper for finished LoRA outputs
+- Workspace file manager for browser upload/download
 - Helper commands:
   - `check_anima_env`
   - `install_ykc_package ykc3`
   - `download_anima_models ykc3`
+  - `start_file_manager`
   - `start_upload_server`
   - `start_download_server ykc3`
 
@@ -24,6 +26,7 @@ Model weights and character packages are intentionally not baked in. Keep Civita
 
 | Connect Port | Internal Port | Description |
 | --- | --- | --- |
+| 2999 | 2999 | Workspace file manager for upload and download |
 | 8000 | 8000 | Browser uploader for packages and model files |
 | 8001 | 8001 | Browser downloader for finished `.safetensors` outputs |
 
@@ -35,6 +38,9 @@ Model weights and character packages are intentionally not baked in. Keep Civita
 | `UPLOAD_DIR` | Directory where uploaded files are saved | `/workspace` |
 | `DOWNLOAD_PORT` | Port used by `start_download_server` | `8001` |
 | `DOWNLOAD_DIR` | Directory served when no tag is passed to `start_download_server` | `/workspace` |
+| `FILE_MANAGER_PORT` | Port used by `start_file_manager` | `2999` |
+| `FILE_MANAGER_ROOT` | Directory shown by `start_file_manager` | `/workspace` |
+| `FILE_MANAGER_TOKEN` | Optional upload token for `start_file_manager` | not set |
 | `CIVITAI_TOKEN` | Token used by `download_anima_models` for Civitai model download | not set |
 
 Do not save `CIVITAI_TOKEN` in the template. Set it directly in the RunPod terminal only when downloading models.
@@ -109,7 +115,7 @@ YOUR_DOCKERHUB_USER/anima-lora-runpod:cu124-torch260
 bash -lc "sleep infinity"
 ```
 
-6. Add HTTP ports `8000,8001` if you want browser upload and download helpers.
+6. Add HTTP ports `2999,8000,8001` if you want browser file helpers.
 7. Save the template.
 
 ## Use On A Fresh Pod
@@ -121,6 +127,14 @@ start_upload_server
 ```
 
 Open the RunPod HTTP service for port `8000`, upload `ykc3_lora_package.zip`, then stop the server with `Ctrl+C`.
+
+Alternatively, if HTTP port `2999` is exposed, start the workspace file manager:
+
+```bash
+start_file_manager
+```
+
+Open the RunPod HTTP service for port `2999` to upload packages and download outputs from `/workspace`.
 
 Then install the package:
 

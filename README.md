@@ -14,6 +14,7 @@ This folder contains a minimal Docker template for Anima LoRA training on RTX 40
   - `install_ykc_package ykc3`
   - `download_anima_models ykc3`
   - `start_upload_server`
+  - `start_download_server ykc3`
 
 Model weights and character packages are intentionally not baked in. Keep Civitai tokens out of Dockerfiles and public registries.
 
@@ -87,7 +88,7 @@ YOUR_DOCKERHUB_USER/anima-lora-runpod:cu124-torch260
 bash -lc "sleep infinity"
 ```
 
-6. Add HTTP port `8000` if you want to use the browser uploader.
+6. Add HTTP ports `8000,8001` if you want browser upload and download helpers.
 7. Save the template.
 
 ## Use On A Fresh Pod
@@ -120,4 +121,12 @@ Expected output goes to:
 /workspace/ykc3_lora/output
 ```
 
-Download the resulting `.safetensors` before terminating the Pod if you are not using persistent storage.
+To download results through the browser, expose HTTP port `8001`, then run:
+
+```bash
+start_download_server ykc3
+```
+
+Open the RunPod HTTP service for port `8001`, download the `.safetensors` files, then stop the server with `Ctrl+C`.
+
+Download the resulting `.safetensors` before stopping or terminating the Pod if you are not using persistent storage.

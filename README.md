@@ -158,7 +158,7 @@ Start training:
 bash /workspace/ykc3_lora/scripts/train_ykc3_anima_lora.sh
 ```
 
-Training packages should use `--discrete_flow_shift=3` for the current Anima base recommendation. They also keep `--network_train_unet_only`, which leaves the Qwen/LLM side untrained and matches the recommended LLM Adapter LR `0` intent.
+Training packages should use `--discrete_flow_shift=3` for the current Anima base recommendation. They also keep `--network_train_unet_only`, which leaves the Qwen/LLM side untrained and matches the recommended LLM Adapter LR `0` intent. Use `--max_train_steps=1800` with `--save_every_n_steps=600` by default; prior runs showed little useful change beyond 1800 steps.
 
 Expected output goes to:
 

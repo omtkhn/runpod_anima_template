@@ -158,6 +158,8 @@ Start training:
 bash /workspace/ykc3_lora/scripts/train_ykc3_anima_lora.sh
 ```
 
+Training packages should use `--discrete_flow_shift=3` for the current Anima base recommendation. They also keep `--network_train_unet_only`, which leaves the Qwen/LLM side untrained and matches the recommended LLM Adapter LR `0` intent.
+
 Expected output goes to:
 
 ```text

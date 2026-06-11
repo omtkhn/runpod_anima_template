@@ -150,6 +150,8 @@ export CIVITAI_TOKEN="set_this_in_runpod_terminal"
 download_anima_models ykc3
 ```
 
+`download_anima_models` downloads the current Anima base as `anyAnimaForLora_102.safetensors` from the official `civitai.com` API, then creates `anyAnimaForLora_101.safetensors` as a compatibility symlink because package training scripts expect that filename.
+
 Start training:
 
 ```bash

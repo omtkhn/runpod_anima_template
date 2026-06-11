@@ -13,8 +13,11 @@ if [[ -z "${CIVITAI_TOKEN:-}" ]]; then
   exit 1
 fi
 
-wget -c -O anyAnimaForLora_101.safetensors \
-"https://civitai.com/api/download/models/2954752?fileId=2834076&token=${CIVITAI_TOKEN}"
+wget -c -O anyAnimaForLora_102.safetensors \
+"https://civitai.com/api/download/models/3017846?fileId=2896767&token=${CIVITAI_TOKEN}"
+
+rm -f anyAnimaForLora_101.safetensors
+ln -s anyAnimaForLora_102.safetensors anyAnimaForLora_101.safetensors
 
 wget -c -O qwen_3_06b_base.safetensors \
 https://huggingface.co/circlestone-labs/Anima/resolve/main/split_files/text_encoders/qwen_3_06b_base.safetensors
